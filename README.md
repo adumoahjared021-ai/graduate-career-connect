@@ -7,6 +7,26 @@ learn skills, find a mentor, and show a portfolio.
 Everything runs on your own computer. There is no backend, no database and no
 API keys — your data is saved in the browser (localStorage).
 
+## Use it online
+
+The app is deployed at **https://graduate-career-connect.vercel.app**.
+
+### Install on a phone
+
+- **Android / Chrome:** open the link, tap the three-dot menu, choose
+  **Add to Home screen** → **Install**.
+- **iPhone / Safari:** open the link, tap **Share**, then **Add to Home Screen**.
+
+It opens full screen with its own icon and keeps working offline.
+
+### Install on a computer
+
+- **Chrome or Edge:** open the link, then click the install icon at the right end
+  of the address bar (or menu → **Install Graduate Career Connect**).
+
+Each device keeps its own data in its own browser — nothing is shared or
+uploaded.
+
 ## Run it
 
 You need Node.js (already installed on this PC). In a terminal, in this folder:
