@@ -289,7 +289,7 @@ export const JOBS: Job[] = [
     id: "j9",
     title: "Customer Success Associate",
     company: "Lumo Telecom",
-    sector: "Customer Service",
+    sector: "Operations",
     kind: "Job",
     location: "Takoradi",
     mode: "On-site",

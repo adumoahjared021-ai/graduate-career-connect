@@ -26,6 +26,12 @@ const SHORT: Record<KindFilter, string> = {
   "Graduate programme": "Graduate",
 };
 
+const SECTORS = [...new Set(JOBS.map((job) => job.sector))].sort((a, b) => {
+  const count = (sector: string) =>
+    JOBS.filter((job) => job.sector === sector).length;
+  return count(b) - count(a) || a.localeCompare(b);
+});
+
 const STAGES: Application["status"][] = [
   "Submitted",
   "Under review",
@@ -86,6 +92,7 @@ export default function JobsPage() {
   const [tab, setTab] = useState<Tab>("browse");
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<KindFilter>("All");
+  const [sector, setSector] = useState("All");
   const [openJob, setOpenJob] = useState<Job | null>(null);
 
   useEffect(() => {
@@ -99,14 +106,15 @@ export default function JobsPage() {
     const needle = query.trim().toLowerCase();
     return JOBS.filter((job) => {
       const matchesKind = kind === "All" || job.kind === kind;
+      const matchesSector = sector === "All" || job.sector === sector;
       const matchesQuery =
         needle === "" ||
-        `${job.title} ${job.company} ${job.location} ${job.skills.join(" ")}`
+        `${job.title} ${job.company} ${job.sector} ${job.location} ${job.skills.join(" ")}`
           .toLowerCase()
           .includes(needle);
-      return matchesKind && matchesQuery;
+      return matchesKind && matchesSector && matchesQuery;
     }).sort((a, b) => matchScore(b, profile) - matchScore(a, profile));
-  }, [kind, query, profile]);
+  }, [kind, sector, query, profile]);
 
   const savedJobs = JOBS.filter((job) => state.savedJobs.includes(job.id));
 
@@ -171,6 +179,23 @@ export default function JobsPage() {
             ))}
           </div>
 
+          <div className="no-scrollbar mt-2 flex gap-1.5 overflow-x-auto px-5 pb-1">
+            {["All", ...SECTORS].map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setSector(option)}
+                className={`shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-medium transition ${
+                  sector === option
+                    ? "bg-mint text-pine"
+                    : "text-soft"
+                }`}
+              >
+                {option === "All" ? "All sectors" : option}
+              </button>
+            ))}
+          </div>
+
           <div className="mt-4 space-y-3 px-5">
             <p className="text-[11.5px] text-faint">
               {results.length} opportunit{results.length === 1 ? "y" : "ies"} · ranked
@@ -198,6 +223,7 @@ export default function JobsPage() {
                     onClick={() => {
                       setQuery("");
                       setKind("All");
+                      setSector("All");
                     }}
                   >
                     Clear filters
